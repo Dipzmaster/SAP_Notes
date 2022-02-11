@@ -1,0 +1,160 @@
+#Declaring User Defined TYPE
+
+##Structure is defined using the TYPES keyword
+TYPES:  begin of tab,
+        name type char10,
+        address type char10,
+        state type char10,
+        country type char10,
+        mark type i,
+        end of tab.
+
+#Declaring Internal Table and Work Area
+ 
+data:   it_tab type table of tab,
+		wa_tab like line of it_tab.         ”wa_tab type tab.
+		
+## (") is used to give comments in code.  
+##Type is a keyword used to refer to a data type whereas 
+##Like is a keyword used to copy the existing properties of already existing data object. 
+
+wa_tab-name = ‘Dipz’.
+wa_tab-address = ‘Nagpur’.
+wa_tab-state = ‘Maharashtra’.
+wa_tab-country = ‘india’.
+wa_tab-mark = ’40’.
+
+append wa_tab to it_tab.
+clear wa_tab.
+
+##The APPEND statement adds a single line/row to an existing internal table.
+##The statement FREE deletes all rows from an internal table and releases the memory area that the rows occupied.
+##The CLEAR statement clears the memory of the variable i.e. variable will be empty.
+##The REFRESH i_tab Used for table to clear all the entries from the internal table body. but still memory allocation exist and you can use some other with in the program.
+ 
+wa_tab-name = ‘Dhruv’.
+wa_tab-address = ‘Nagpur’’.
+wa_tab-state = ‘Maharashtra’.
+wa_tab-country =’india’.
+wa_tab-mark = ’41’.
+
+append wa_tab to it_tab.
+clear wa_tab.
+
+ 
+wa_tab-name = ‘Sidharth’.
+wa_tab-address = ‘Nagpur’’.
+wa_tab-state = ‘Maharashtra’.
+wa_tab-country = ‘india’.
+wa_tab-mark = ’47’.
+
+append wa_tab to it_tab.
+clear wa_tab.
+
+ 
+wa_tab-name = ‘Arun’.
+wa_tab-address = ‘Nagpur’’.
+wa_tab-state = ‘Maharashtra’.
+wa_tab-country = ‘india’.
+wa_tab-mark = ’34’.
+
+collect wa_tab into it_tab.
+clear wa_tab.
+
+##The COLLECT wa INTO itab [result]. 
+##This statement inserts the content of a work area wa either as a single row in an internal table itab 
+##or adds the values of its numeric components to the corresponding values of existing rows with the same primary table key.
+ 
+loop at it_tab into wa_tab.
+  write :/ (1) wa_tab-name,
+           (15) wa_tab-address,
+           (30) wa_tab-state,
+           (50) wa_tab-country,
+           (70) wa_tab-mark.
+
+endloop.
+
+uline.
+
+## uline and vline statement are used for horizontal an vertical line separator
+
+read table it_tab into wa_tab index 2.    ”Accessing through index 
+	write :/(1) wa_tab-name,
+			(15) wa_tab-address,
+            (30) wa_tab-state,
+            (50) wa_tab-country,
+            (70) wa_tab-mark.
+
+    uline.
+
+read table it_tab into wa_tab with key name = ‘Arun’.
+	write :/(1) wa_tab-name,
+            (15) wa_tab-address,
+            (30) wa_tab-state,
+            (50) wa_tab-country,
+            (70) wa_tab-mark.
+
+    uline.
+
+sort it_tab ascending by name.         ”Sorting it_tab by name.
+
+sort it_tab descending by name.        ”Sorting it_tab by name.
+
+##By default ascending
+
+#Creation of a sorted internal table
+data :  it_tab type sorted table of tab with unique key name, ” sorted internal table
+		wa_tab like line of it_tab.
+
+#Creation of a hashed internal table
+data :  it_tab type hashed table of tab with unique key name,
+		wa_tab like line of it_tab.		
+
+##Standard tables have an internal linear index. The system can access records either by using the table index or the key. 
+#The response time for key access is proportional to the number of entries in the table. 
+#The key of a standard table is always non-unique. You cannot specify a unique key.
+##Sorted tables are always saved sorted by the key. you must specify whether the key is to be UNIQUE or NON-UNIQUE. 
+#Standard tables and sorted tables are known generically as index tables.
+##Hashed tables have no linear index. You can only access a hashed table using its key. The key of a hashed table must be unique. 
+#When you define the table, you must specify the key as UNIQUE.
+		
+insert wa_tab into it_tab index 1.
+
+##The insert statement is used to insert the data into particular index		
+
+
+#Creation of a nested internal table
+#Declaring User Defined TYPE
+
+TYPES : begin of tab1,
+        title(5) type c,
+        f_name(10),
+        l_name(10),
+        end of tab1.
+
+TYPES:  begin of tab2,
+        person type tab1,     "Nesting tab1 structure in tab2
+        address(20),
+        end of tab2.
+
+data :  it_tab type table of tab2,
+        wa_tab type tab2.
+
+wa_tab-person-title = ‘Mr.’.
+wa_tab-person-f_name = ‘Rohit’.
+wa_tab-person-l_name = ‘Gupta’.
+wa_tab-address = ‘Bengaluru’.
+append wa_tab to it_tab.
+
+ 
+loop at it_tab into wa_tab.
+  write :/   wa_tab-person-title,
+             wa_tab-person-f_name,
+             wa_tab-person-l_name,
+             wa_tab-address.
+endloop.
+		
+		
+		
+		
+		
