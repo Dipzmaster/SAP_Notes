@@ -1,0 +1,143 @@
+#Internal Table Comparision
+
+data :  begin of line,
+        col1 type i,
+        col2 type i,
+       end of line.
+
+data : itab1 like table of line.
+data : itab2 like table of line.
+
+ 
+do 3 times.
+  line-col1 = sy-index.
+  line-col1 = sy-index ** 2.
+  append line to itab1.
+enddo.
+
+itab2 = itab1.
+
+if itab1 eq itab2.
+  write :/ ‘itab1 = itab2’.
+endif.
+
+ 
+line-col1 = 10.
+line-col2 = 20.
+
+append line to itab1.
+
+if itab1 gt itab2.
+  write :/ ‘itab1 > itab2’.
+endif.
+
+ 
+if itab2 lt itab1.
+  write :/ ‘itab2 < itab2’.
+endif.
+
+##=, EQ	Equal: True if the value of operand1 matches the value of operand2.
+##<>, NE	Not Equal: True if the value of operand1 does not match the value of operand2.
+##<, LT	Less Than: True if the value of operand1 is less than the value of operand2.
+##>, GT	Greater Than: True if the value of operand1 is greater than the value of operand2.
+##<=, LE	Less Equal: True if the value of operand1 is less than or equal to the value of operand2.
+##>=, GE	Greater Equal: True if the value of operand1 is greater than or equal to the value of operand2
+
+
+
+DATA:  BEGIN OF LINE,
+       COL1 TYPE I,
+       COL2 TYPE I,
+       END OF LINE.
+
+DATA:  ITAB LIKE SORTED TABLE OF LINE WITH UNIQUE KEY COL1.
+
+DO 5 TIMES.
+  LINE-COL1 = SY-INDEX.
+  LINE-COL2 = SY-INDEX ** 2.
+  APPEND LINE  TO ITAB.
+ENDDO.
+ 
+LOOP AT ITAB INTO LINE.
+  WRITE :/ LINE-COL1, LINE-COL2.
+ENDLOOP.
+
+ULINE.
+ 
+DELETE ITAB INDEX : 2, 3.
+DELETE TABLE ITAB WITH TABLE KEY COL1 = 2.
+DELETE ADJACENT DUPLICATES FROM ITAB COMPARING ALL FIELDS.
+or
+DELETE ADJACENT DUPLICATES FROM ITAB COMPARING COL2.
+
+##Delete statement with index will delete the data from internal table
+ 
+LOOP AT ITAB INTO LINE.
+  WRITE :/ LINE-COL1, LINE-COL2.
+ENDLOOP.
+
+ULINE.
+
+APPEND LINES OF ITAB2 FROM 2 TO 3 TO ITAB1.
+##The APPEND LINES will append one iternal table data to other
+
+INSERT LINES OF ITAB1 INTO ITAB2 INDEX 1.
+##Insert the itab1 data to itab2 at specific index
+
+MODIFY TABLE ITAB FROM LINE.
+##The statement Modify will update the data in itab if it is changed in work area before appending to itab
+
+MODIFY ITAB FROM LINE TRANSPORTING COL2  WHERE ( COL1 > 1 ) AND ( COL1 < 4 ).
+##The TRANSPORTING statement will transport the data from one itab to other
+
+READ TABLE ITAB FROM LINE INTO LINE COMPARING COL1.
+##The Read statement use to read the itab data
+
+READ TABLE ITAB WITH KEY COL1 = 3 INTO LINE BINARY SEARCH.
+##Read Internal Table using binary search
+
+
+#Internal Table-field symbol as work area
+
+DATA:  BEGIN OF LINE,
+       COL1 TYPE I,
+       COL2 TYPE I,
+       END OF LINE.
+
+DATA:  ITAB LIKE SORTED TABLE OF LINE WITH UNIQUE KEY COL1.
+FIELD-SYMBOLS : <FS> LIKE LINE OF ITAB.
+ 
+DO 4 TIMES.
+   LINE-COL1 = SY-INDEX.
+   LINE-COL2 = SY-INDEX ** 2.
+   INSERT LINE INTO TABLE ITAB.
+ENDDO.
+
+READ TABLE ITAB WITH TABLE KEY COL1 = 2  ASSIGNING <FS>.
+   <FS>-COL2 = 200.
+   LOOP AT ITAB INTO LINE.
+     WRITE :/ LINE-COL1, LINE-COL2.
+   ENDLOOP.
+   
+   
+#Internal table with header line
+
+Types : begin of ty_tab,
+        name(10) type c,
+        add(10) type c,
+        end of ty_tab.
+		
+data : it_tab type table of ty_tab  with header line .
+
+
+
+#The following control break statements are available with in LOOP and ENDLOOP.
+AT FIRST / ENDAT
+AT LAST /  ENDAT
+AT NEW / ENDAT
+AT END OF / ENDAT
+SUM
+ON CHANGE OF / ENDON
+
+##The code between AT NEW and ENDAT is executed only during the first loop pass. So it is used to write the headers or some other initialization processing.
+##The code between AT LAST and ENDAT is executed only during the last loop pass. So it is used to write the totals or some report footers.
