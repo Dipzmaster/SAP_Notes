@@ -1,0 +1,138 @@
+#Modularization
+
+#Subroutines are called by using PERFORM keyword and defined within FORM and ENDFORM block.
+
+1. pass by value 
+2. pass by reference 
+3. pass by value and return 
+
+#pass by value method-> using – using value( )
+TYPES : BEGIN OF LINE,
+        NAME(10),
+        ADD(10),
+        END OF LINE.
+
+DATA : PER1 TYPE LINE.
+
+PER1-NAME = ‘AAAA’.
+PER1-ADD = ‘BBBB’.
+
+PERFORM DISPLAY USING PER1.  ”calling subroutine – Display
+ 
+WRITE :/ PER1-NAME, PER1-ADD.
+
+*&———————————————————————*
+*&      Form  DISPLAY
+*&———————————————————————*
+ 
+FORM DISPLAY USING VALUE(P_PER1) TYPE LINE.
+  WRITE :/ P_PER1-NAME, P_PER1-ADD.
+       P_PER1-NAME = ‘CCCC’.
+       P_PER1-ADD = ‘DDDD’.
+  WRITE :/ PER1-NAME, PER1-ADD.
+ENDFORM.                    ” 
+
+###OUTPUT:
+AAAA       BBBB
+AAAA       BBBB
+AAAA       BBBB
+
+
+#pass by reference method-> using – using
+TYPES : BEGIN OF LINE,
+        NAME(10),
+        ADD(10),
+        END OF LINE.
+
+DATA : PER1 TYPE LINE.
+
+PER1-NAME = ‘AAAA’.
+PER1-ADD = ‘BBBB’.
+ 
+PERFORM DISPLAY USING PER1.
+
+WRITE :/ PER1-NAME, PER1-ADD.
+
+*&———————————————————————*
+*&      Form  DISPLAY
+*&———————————————————————*
+
+FORM DISPLAY  USING P_PER1 TYPE LINE.
+  WRITE :/ P_PER1-NAME, P_PER1-ADD.
+           P_PER1-NAME = ‘CCCC’.
+           P_PER1-ADD = ‘DDDD’.
+  WRITE :/ PER1-NAME, PER1-ADD.
+ENDFORM.                    ” DISPLAY
+
+ 
+###OUTPUT
+
+AAAA       BBBB
+CCCC       DDDD
+CCCC       DDDD
+
+
+#pass by value and return  method-> using – changing  value( )
+TYPES : BEGIN OF LINE,
+        NAME(10),
+        ADD(10),
+        END OF LINE.
+ 
+DATA : PER1 TYPE LINE.
+
+PER1-NAME = ‘AAAA’.
+PER1-ADD = ‘BBBB’.
+
+PERFORM DISPLAY USING PER1.
+
+WRITE :/ PER1-NAME, PER1-ADD.
+
+*&———————————————————————*
+*&      Form  DISPLAY
+*&———————————————————————*
+
+FORM DISPLAY  CHANGING VALUE(P_PER1) TYPE LINE.
+  WRITE :/ P_PER1-NAME, P_PER1-ADD.
+P_PER1-NAME = ‘CCCC’.
+P_PER1-ADD = ‘DDDD’.
+  WRITE :/ PER1-NAME, PER1-ADD.
+ENDFORM.                    ” DISPLAY
+ 
+###OUTPUT
+
+AAAA       BBBB
+AAAA       BBBB
+CCCC       DDDD
+
+#pass by reference method-> changing – using 
+TYPES : BEGIN OF LINE,
+        NAME(10),
+        ADD(10),
+        END OF LINE.
+		
+DATA : PER1 TYPE LINE.
+
+PER1-NAME = ‘AAAA’.
+PER1-ADD = ‘BBBB’.
+
+PERFORM DISPLAY CHANGING PER1.
+
+WRITE :/ PER1-NAME, PER1-ADD.
+
+*&———————————————————————
+**&      Form  DISPLAY
+*&———————————————————————
+
+FORM DISPLAY  USING P_PER1 TYPE LINE.
+  WRITE :/ P_PER1-NAME, P_PER1-ADD.
+P_PER1-NAME = ‘CCCC’.
+P_PER1-ADD = ‘DDDD’.
+  WRITE :/ PER1-NAME, PER1-ADD.
+ENDFORM.                    ” DISPLAY
+
+
+###OUTPUT
+
+AAAA       BBBB
+CCCC       DDDD
+CCCC       DDDD
