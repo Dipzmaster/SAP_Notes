@@ -1,0 +1,208 @@
+#Select and endselect
+TYPES : BEGIN OF TAB,
+         ROLL_NO TYPE ZEMP-REGD_NO,
+         NAME TYPE ZEMP-NAME,
+         ADDRESS TYPE ZEMP-ADDRESS,
+         STATE TYPE ZEMP-STATE,
+         COUNTRY TYPE  ZEMP-COUNTRY,
+        END OF TAB.
+
+
+DATA : WA_TAB TYPE  TAB.
+
+SELECT REGD_NO
+       NAME
+       ADDRESS
+       STATE
+       COUNTRY
+       FROM ZEMP INTO WA_TAB.
+
+     WRITE :/ WA_TAB-ROLL_NO,
+              WA_TAB-NAME,
+              WA_TAB-ADDRESS,
+              WA_TAB-STATE,
+              WA_TAB-COUNTRY.
+    ENDSELECT.
+
+
+#single record selection without condition
+
+data: wa type spfli.
+select single carrid 
+			  connid 
+			  cityfrom 
+			  cityto into corresponding fields of wa from spfli.
+			  
+#single record selection with condition 
+
+data: wa type spfli.
+select single carrid 
+		      connid 
+			  cityfrom 
+			  cityto into corresponding fields of wa from spfli where carrid = ‘LH’.
+			  
+#single record selection with condition ‘AND’
+
+data: wa type spfli.
+select single carrid 
+	          connid 
+			  cityfrom 
+			  cityto into corresponding fields of wa from spfli where carrid = ‘LH’ and connid = ‘0400’.
+			  
+#multiple line selection without condition
+
+data: itab type standard table of spfli,
+	  wa like line of itab.
+select carrid 
+	   connid 
+	   cityfrom 
+	   cityto into corresponding fields of table itab from spfli .
+	   
+#multiple line selection with condition 'OR'
+
+data: itab type standard table of spfli,
+       wa like line of itab.
+
+select carrid 
+	   connid 
+	   cityfrom 
+	   cityto into corresponding fields of
+          table itab from spfli where carrid = 'LH' or carrid = 'AA'.
+		  
+#multiple line selection with condition 'OR'and 'AND'
+
+data: itab type standard table of spfli,
+       wa like line of itab.
+
+select carrid 
+	   connid 
+	   cityfrom 
+	   cityto into corresponding fields of
+         table itab from spfli where carrid = 'LH' or carrid = 'AA' and
+                                               connid = '0064'.
+											   
+#reading all columns of a table  using workarea
+
+data: wa type spfli.
+
+select * from spfli into wa. 
+write :/ sy-dbcnt,
+		 wa-carrid, wa-connid.
+endselect.
+
+
+#single field as target
+
+data: avg type p decimals 2,
+       total type p decimals 2.
+
+select avg( luggweight ) sum( luggweight )
+            into (avg, total) from sbook.
+			
+			
+#single field as target with condition
+
+data: avg type p decimals 2,
+       total type p decimals 2.
+
+select avg( luggweight ) sum( luggweight )
+         into (avg, total) from sbook where carrid = 'LH'.
+		 
+
+#using aliases to calculate avg and sum
+
+data : begin of result,
+       average type p decimals 2,
+       total   type p decimals 2,
+       end of result.
+
+ select avg( luggweight ) as average sum( luggweight ) as total
+                                         into result from sbook.
+										 
+										 
+#distinct statement
+
+data : wa type spfli,
+       itab like table of wa.
+
+#select cityfrom cityto into corresponding fields of table itab from spfli.
+select distinct cityfrom cityto into corresponding fields of table itab from spfli.
+
+#SPECIFYING SINGLE FIELD AS TARGET
+
+DATA : CARR TYPE SPFLI-CARRID,
+       CONN TYPE SPFLI-CONNID.
+
+SELECT CARRID CONNID INTO (CARR,CONN) FROM SPFLI.
+
+#SPECIFYING TARGET SAME AS DBTABLE
+
+DATA : SPFLI TYPE SPFLI.
+
+#SELECT * FROM SPFLI INTO SPFLI.
+SELECT * FROM SPFLI .
+WRITE :/ SPFLI-CARRID, SPFLI-CONNID, SPFLI-CITYFROM, SPFLI-CITYTO.
+ENDSELECT.
+
+#SPECIFYING TARGET TABLE  SAME AS DBTABLE
+DATA : SPFLI TYPE TABLE OF SPFLI,
+       WA LIKE LINE OF SPFLI.
+SELECT * FROM SPFLI INTO TABLE SPFLI.
+
+#SPECIFYING TABLE NAME STATICALLY AND DYNAMICALLY
+
+DATA : ITAB TYPE TABLE OF SPFLI.
+DATA : WA LIKE LINE OF ITAB.
+
+SELECT * FROM (NAME) INTO TABLE ITAB. " ONLY WORKS FOR SPFLI TABLE AS
+                                       " ITAB IS OF TYPE SPFLI
+									   
+#RESTRICTING NUMBER OF LINES
+
+ SELECT * FROM SPFLI INTO TABLE ITAB UP TO 20 ROWS.
+
+#BYPASSING BUFFER
+
+SELECT * FROM SPFLI BYPASSING BUFFER INTO TABLE ITAB.
+
+#VALUES IN INTERVALS
+
+ SELECT * FROM SFLIGHT INTO TABLE ITAB WHERE SEATSOCC BETWEEN 100 AND
+                                                              200.
+
+#VALUES NOT IN INTERVALS
+ SELECT * FROM SFLIGHT INTO TABLE ITAB WHERE SEATSOCC NOT BETWEEN 100
+                                                              AND 200.
+															  
+															  
+#COMAPIRING STRINGS
+ SELECT * FROM SPFLI INTO TABLE ITAB WHERE CITYFROM LIKE 'S%'.
+                        " CITYFROM STARTS WITH 'S', %-WILDCARD
+
+ SELECT * FROM SPFLI INTO TABLE ITAB WHERE CITYFROM LIKE '%R%'.
+                           " CITYFROM CONTAINS  'R', %-WILDCARD
+
+ SELECT * FROM SPFLI INTO TABLE ITAB WHERE CITYFROM LIKE '%O'.
+                      " CITYFROM ENDWITH WITH 'O', %-WILDCARD
+
+ SELECT * FROM SPFLI INTO TABLE ITAB WHERE CITYFROM NOT LIKE '%O'.
+                         " CITYFROM NOT ENDS WITH 'O', %-WILDCARD
+
+ SELECT * FROM SPFLI INTO TABLE ITAB WHERE CITYFROM  LIKE '_O%'.
+                     " CITYFROM SECOND CHARAC IS 'O', %-WILDCARD
+
+#CHECKING LIST OF VALUES
+
+SELECT * FROM SPFLI INTO TABLE ITAB  WHERE CITYTO IN ('TOKYO','ROME').
+* SELECT * FROM SPFLI INTO TABLE ITAB  WHERE CITYTO NOT IN ('TOKYO', 'ROME').
+
+#CHECKING NULL VALUES
+
+SELECT * FROM SPFLI INTO TABLE ITAB  WHERE CITYTO IS  NULL.
+* SELECT * FROM SPFLI INTO TABLE ITAB  WHERE CITYTO IS NOT  NULL.
+
+#NEGATING CONDITION
+SELECT * FROM SPFLI INTO TABLE ITAB  WHERE NOT CITYTO = 'SAN FRANCISCO'.
+
+					 
+
