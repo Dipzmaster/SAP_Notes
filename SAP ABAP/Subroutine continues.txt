@@ -1,0 +1,245 @@
+#Example of Passing Parameters by Reference
+
+REPORT demo_1.
+DATA: num1 TYPE i,
+      num2 TYPE i,
+      sum  TYPE i.
+
+num1 = 2. 
+num2 = 4.
+PERFORM addit USING num1 num2 CHANGING sum.
+
+num1 = 7. 
+num2 = 11.
+PERFORM addit USING num1 num2 CHANGING sum.
+
+FORM addit USING add_num1 TYPE any 
+			     add_num2 TYPE any 
+				 CHANGING add_sum TYPE any.
+
+ add_sum = add_num1 + add_num2.  
+ 
+PERFORM out USING add_num1 add_num2 add_sum.
+ENDFORM.
+
+FORM out USING out_num1 TYPE any
+               out_num2 TYPE any            
+			   out_sum  TYPE any.
+
+ WRITE: / 'Sum of', out_num1, 'and', out_num2, 'is', out_sum.
+
+ENDFORM.
+
+###This produces the following output:
+
+Sum of          2 and          4 is          6
+
+Sum of          7 and         11 is         18
+
+In this example, the actual parameters num1, num2, and sum are passed by reference to the formal parameters of the subroutine addit. 
+After changing add_sum, the latter parameters are then passed to the formal parameters out_num1, out_num2, and out_sum  of the subroutine out.
+
+Input parameters that are changed in the subroutine are also changed in the calling program. 
+To prevent this, you must pass the parameter as a value in a USING addition.
+
+##Example of Passing Parameters by Reference
+
+REPORT demo_2.
+
+DATA: num  TYPE i VALUE 5,      
+      fac  TYPE i VALUE 0.
+
+PERFORM fact USING num CHANGING fac.
+
+WRITE: / 'Factorial of', num, 'is', fac.
+
+FORM fact USING value(f_num) TYPE i CHANGING f_fact TYPE i.
+
+f_fact = 1.  
+ WHILE f_num GE 1.    
+ f_fact = f_fact * f_num.    
+ f_num = f_num - 1.  
+ ENDWHILE.
+
+ENDFORM.
+
+###This produces the following output:
+
+Factorial of          5 is        120
+
+To ensure that an input parameter is not changed in the calling program, even if it is changed in the subroutine, you can pass data to a subroutine by value. 
+In this example, the factorial of a number num is calculated. The input parameter num is passed to the formal parameter f_num of the subroutine. 
+Although f_num is changed in the subroutine, the actual parameter num keeps its old value. The output parameter fac is passed by reference.
+
+#Example of Output Parameters
+
+REPORT demo_3.
+
+DATA: op1  TYPE i,
+      op2  TYPE i,
+      res  TYPE i.
+
+op1 = 3.
+op2 = 4.
+
+PERFORM multip USING op1 op2 CHANGING res.
+
+WRITE: / 'After subroutine:',
+       / 'RES=' UNDER 'RES=', res.
+
+FORM multip USING value(o1) TYPE any value(o2) TYPE any CHANGING value(r) TYPE any.
+
+ r = o1 * o2.  
+ WRITE: / 'Inside subroutine:',
+        /  'R=', r, 'RES=', res.
+
+ENDFORM.
+
+This produces the following output:
+
+Inside subroutine:
+
+R=         12 RES=          0
+
+After subroutine:
+
+ RES=         12
+
+To return a changed formal parameter once the subroutine has finished successfully, you can use a CHANGING parameter and pass the parameter by reference. In this example, the actual parameters op1 and op2 are passed by value in the USING addition to the formal parameters o1 and o2. The actual parameter res is passed by value to the formal parameter r using CHANGING. By writing r and res onto the screen from within the subroutine, it is demonstrated that res has not changed its contents before the ENDFORM statement. After returning from the subroutine, its contents have changed.
+
+#Example of Passing Structures
+
+REPORT demo_4.
+
+TYPES: BEGIN OF line,
+         name(10)   TYPE c,
+         age(2)     TYPE n,
+         country(3) TYPE c,
+   	   END OF line.
+
+DATA who TYPE line.
+
+who-name = 'Otto'.
+who-age = '10'. 
+who-country = 'D'.
+
+PERFORM components CHANGING who.
+
+WRITE: / who-name,
+         who-age,
+		 who-country.
+
+FORM components CHANGING value(person) TYPE line.
+
+ WRITE: / person-name,
+          person-age, 
+		  person-country.  
+		  
+		  person-name = 'Mickey'.  
+		  person-age = '60'.  
+		  person-country = 'USA'.
+ENDFORM.
+
+This produces the following output:
+
+Otto       10 D
+
+Mickey     60 USA
+
+The actual parameter who with the user-defined, structured data type line is passed to the formal parameter person. The formal parameter person is typed with TYPE line. Since line is a user-defined data type, the type of person is completely specified. The subroutine accesses and changes the components of person. They are then returned to the components of who in the calling program.
+
+#Example of Passing Internal Tables
+
+REPORT demo_5.
+
+DATA: BEGIN OF line,
+        col1 TYPE i,
+        col2 TYPE i,
+	  END OF line.
+
+DATA itab LIKE STANDARD TABLE OF line.
+
+PERFORM fill CHANGING itab.
+
+PERFORM out USING itab.
+
+FORM fill CHANGING f_itab LIKE itab.
+
+ DATA f_line LIKE LINE OF f_itab.
+
+ DO 3 TIMES.
+ f_line-col1 = sy-index.
+ f_line-col2 = sy-index ** 2.
+ APPEND f_line TO f_itab.
+ ENDDO.
+
+ENDFORM.
+
+FORM out USING value(f_itab) LIKE itab.
+
+ DATA f_line LIKE LINE OF f_itab.
+
+ LOOP AT f_itab INTO f_line.
+ WRITE: / f_line-col1, 
+          f_line-col2.  
+ ENDLOOP.
+
+ENDFORM.
+
+This produces the following output:
+
+1          1
+
+2          4
+
+3          9
+
+You can define the types of the formal parameters of the parameter interface of procedures as internal tables. In the example, the subroutines fill and out each have one formal parameter defined as an internal table. An internal table without header line is passed to the subroutines. Each subroutine declares a work area f_line as a local data object. Were itab a table with a header line, you would have to replace itab with itab[] in the PERFORM and FORM statements.
+
+#Example of the TABLES parameter
+
+This example is provided for completeness. The TABLES parameter is only supported for the sake of compatibility and should not be used.
+
+REPORT demo_6.
+
+TYPES: BEGIN OF line,
+         col1 TYPE i,
+         col2 TYPE i,
+    	 END OF line.
+
+DATA: itab TYPE STANDARD TABLE OF line WITH HEADER LINE,
+      jtab TYPE STANDARD TABLE OF line.
+
+PERFORM fill TABLES itab.
+
+MOVE itab[] TO jtab.
+
+PERFORM out TABLES jtab.
+
+FORM fill TABLES f_itab LIKE itab[].
+
+ DO 3 TIMES.
+ f_itab-col1 = sy-index.
+ f_itab-col2 = sy-index ** 2.
+ APPEND f_itab.  ENDDO.
+
+ENDFORM.
+
+FORM out TABLES f_itab LIKE jtab.
+
+ LOOP AT f_itab.
+ WRITE: / f_itab-col1,
+		  f_itab-col2.
+		  ENDLOOP.
+
+ENDFORM.
+
+The produces the following output:
+
+1          1
+
+2          4
+
+3          9
+
+In this example, an internal table itab is declared with a header line and an internal table jtab is declared without a header line. The actual parameter itab is passed to the formal parameter f_itab of the subroutine fill in the TABLES addition. The header line is passed with it. After the body of the table has been copied from itab to jtab, the actual parameter jtab is passed to the formal parameter f_itab of the subroutine out using the TABLES addition. The header line f_itab, which is not passed, is generated automatically in the subroutine.
