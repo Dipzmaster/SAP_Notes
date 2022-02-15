@@ -1,0 +1,108 @@
+#CHECKING LIST OF VALUES
+
+SELECT * FROM SPFLI INTO TABLE ITAB  WHERE CITYTO IN ('TOKYO','ROME').
+# SELECT * FROM SPFLI INTO TABLE ITAB  WHERE CITYTO NOT IN ('TOKYO', 'ROME').
+
+#CHECKING NULL VALUES
+
+SELECT * FROM SPFLI INTO TABLE ITAB  WHERE CITYTO IS  NULL.
+# SELECT * FROM SPFLI INTO TABLE ITAB  WHERE CITYTO IS NOT  NULL.
+
+#NEGATING CONDITION
+
+SELECT * FROM SPFLI INTO TABLE ITAB  WHERE NOT CITYTO = 'SAN FRANCISCO'.
+
+#Insert
+
+INSERT  ZEMP FROM  TABLE IT_TAB.
+
+#Modify
+
+modify zemp from wa_tab.
+
+#Delete
+
+DELETE ZEMP from table it_tab.
+
+
+#Inner Join SPFLI with SFLIGHT
+
+SELECT SPFLI~CARRID
+       SPFLI~CONNID
+       SPFLI~COUNTRYFR
+       SPFLI~CITYFROM
+       SPFLI~AIRPFROM
+       SPFLI~COUNTRYTO
+       SPFLI~CITYTO
+       SPFLI~AIRPTO
+       SPFLI~DISTANCE
+       SFLIGHT~FLDATE
+       SFLIGHT~PRICE
+       SFLIGHT~SEATSMAX
+       SFLIGHT~SEATSOCC
+       INTO TABLE IT_FLIGHT
+       FROM SPFLI INNER JOIN SFLIGHT
+       ON SPFLI~CARRID = SFLIGHT~CARRID AND SPFLI~CONNID = SFLIGHT~CONNID
+       WHERE SPFLI~CARRID = P_CARRID AND SPFLI~CONNID = P_CONNID.
+
+
+#LEFT OUTER JOIN SPFLI with SFLIGHT
+
+SELECT SPFLI~CARRID
+       SPFLI~CONNID
+       SPFLI~COUNTRYFR
+       SPFLI~CITYFROM
+       SPFLI~AIRPFROM
+       SPFLI~COUNTRYTO
+       SPFLI~CITYTO
+       SPFLI~AIRPTO
+       SPFLI~DISTANCE
+       SFLIGHT~FLDATE
+       SFLIGHT~PRICE
+       SFLIGHT~SEATSMAX
+       SFLIGHT~SEATSOCC
+       INTO TABLE IT_FLIGHT
+       FROM SPFLI LEFT OUTER JOIN SFLIGHT
+       ON SPFLI~CARRID = SFLIGHT~CARRID AND SPFLI~CONNID = SFLIGHT~CONNID
+       WHERE SPFLI~CARRID = P_CARRID AND SPFLI~CONNID = P_CONNID.
+
+#group by clause 
+
+select carrid
+		min( price )
+		max( price )
+		into   TABLE ITAB “(carrid, minimum,maximum)
+		from sflight group by carrid .
+		
+#HAVING CLAUSE WITH GROUP BY
+
+select CARRID 
+		CONNID into CORRESPONDING FIELDS OF WA from sflight
+		where carrid = ‘LH’ OR CARRID = ‘AA’ GROUP BY CARRID CONNID
+		HAVING SUM( SEATSOCC ) > 300.
+		
+		
+#SORTING - ORDRE BY COLUMN
+
+SELECT * FROM SPFLI INTO TABLE  ITAB ORDER BY PRIMARY KEY.
+#SELECT * FROM SPFLI INTO TABLE ITAB ORDER BY CITYFROM  CITYTO. “DESCENDING.
+
+#use of group by and order by clause
+
+select carrid connid planetype seatsmax max( seatsocc )
+        into (wa-carrid, wa-connid,wa-planetype, wa-seatsmax, wa-seatsocc)
+        from sflight where carrid = 'AF'
+        group by carrid connid planetype seatsmax order by carrid connid.
+		
+#Sub Queries
+
+select carrname from scarr into table name_tab
+where exists ( select *  from spfli where carrid = scarr~carrid and
+                                          cityfrom = 'NEW YORK' ) .
+										  
+										  
+#Sub queries
+
+select single city latitude longitude into (city , lati, longi)
+ from sgeocity where city
+ in ( select cityfrom from spfli where carrid = carr_id and connid = conn_id ).
