@@ -1,0 +1,6 @@
+##ABAP MEMORY-
+It uses export and import parameters when an active internal session calls another internal session 
+within a single main session .
+
+##SAP MEMORY- 
+It uses set and get parameters to pass the data from one main session to another main session.
