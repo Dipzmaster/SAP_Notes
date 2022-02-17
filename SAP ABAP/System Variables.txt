@@ -1,0 +1,60 @@
+SY-CPAGE – Holds Current Page Number
+SY-CPROG – Contains Program Name
+SY-CUCOL – Cursor Position ( Column)
+SY-CUROW – Cursor Position (Line)
+
+##Date
+SY-DATLO –  Local Date for User
+SY-DATUM – System Date
+SY-DATUD – Global Date Related To UTC ( GMT )
+
+#Database
+SY-DBCNT – Number of entries read by DB Operation
+SY-DBNAM- Logical DB for ABAP/4 Program
+SY-DBSYS –  System DB System
+
+SY-DYNNR- Number of Current Screen
+SY-INDEX –  Number Of Loop passes
+SY-LANGU- SAP Log on Language Key
+
+##Lines
+SY-LILLI – Number Of Current List Line
+SY-LINCT – Number Of List Lines
+SY-LINNO – Current Line for List Creation
+SY-LINSZ – Line Size of List
+SY-LISEL – Selected Line For Interactive List
+
+SY-LSIND – Number Of Secondary List
+SY-MANDT – Client Number For SAP Log On
+
+##Message
+SY-MSGID – Message ID
+SY-MSGTY – Message Type
+SY-MSGNO – Message Number
+SY-MSGV1 – Message Variable1
+SY-MSGV2 – Message Variable2
+SY-MSGV3 – Message Variable3
+SY-MSGV4 – Message Variable4
+
+
+SY-OPSYS – Operating System
+SY-PAART – Print Format
+SY-PAGCT – Page Size of List in Report Program
+SY-PAGNO – Current Page in the List
+SY-PDEST – Print Output Device
+SY-PFKEY – Run time Current F key Status
+SY-REPID – Report Name in ABAP
+SY-SAPRL – SAP Release
+SY-SUBRC – Return Value after specific ABAP Statement
+SY-SYSID – SAP system ID
+SY-TABIX – Current line of Internal Table
+SY-TCODE – Current Transaction Code
+SY-TIMLO – Local Time Of User
+SY-TITLE – Title of ABAP Program
+SY-TMAXL – Maximum entries in a Internal Table
+SY-TNAME – Name Of Internal Table after first Access
+SY-UCOMM - Interact : Command field Function entry / Function code
+SY-ULINE – Underline
+SY-UNAME – Session : SAP user from Log On
+SY-UZEIT – System Time
+SY-VLINE – Vertical Bar
