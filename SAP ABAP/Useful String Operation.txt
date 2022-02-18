@@ -1,0 +1,34 @@
+#Substring with Offset and length
+
+res = SUBSTRING( val = ‘ABCDEFGH’ off = 2 len = 3 ).
+
+res = CDE
+
+
+#Substring From
+
+result = substring_from( val = ‘ABCDEFGH’ sub = ‘CD’ ).
+
+result = CDEFGH
+
+
+#Substring After
+
+result = substring_after( val = ‘ABCDEFGH’ sub = ‘CD’ ). 
+
+result = EFGH
+
+
+#Substring Before
+
+result = substring_brfore( val = ‘ABCDEFGH’ sub = ‘CD’ ). 
+
+result = AB
+
+
+#Substring To
+
+result = substring_to( val = ‘ABCDEFGH’ sub = ‘CD’ ). 
+
+result = ABCD
+
