@@ -1,0 +1,25 @@
+#ABAP UNIT TEST Basics
+
+#TEST UNIT:- 
+It can be a class/method, a report program or function module/function pool or module pool. 
+These can be put into a test class and test method(s).
+
+Individual test units can be tested by calling them  from either 
+SE80, 
+class builder(SE24), 
+ABAP Editor(SE38) or from 
+Function Builder(SE37).
+
+The expectation from the ABAP UNIT Test, is to check whether a unit returns the desired result or not. 
+The checking is performed by the service class CL_AUNIT_ASSERT by comparing  expected value & the actual value calculated by a Unit. 
+
+Also in the system the service class CL_ABAP_UNIT_ASSERT is present  but the service class CL_AUNIT_ASSERT is superior than the CL_ABAP_UNIT_ASSERT.
+
+For the test class, 
+the RISK LEVEL(Harmless, Dangerous, Critical) and 
+DURATION( Short, Medium, Long ) are mandatory additional annotations are added . 
+This is because in Transaction- SAUNIT_CLIENT_SETUP a client wide setup for the risk level and 
+the duration is mentioned and when testing, the system checks the current test unit risk level and 
+duration against the client wide setup.
+
+Check Transaction--SAUNIT_CLIENT_SETUP
