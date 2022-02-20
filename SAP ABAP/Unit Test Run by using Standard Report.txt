@@ -1,0 +1,18 @@
+##Unit Test Run by using Standard Report
+
+Unit test can be run by standard report- RS_AUCV_RUNNER and 
+to run periodically just create a variant for the package/classes as needed and 
+schedule a background job with the report and variant in Transaction- SM36.
+
+
+Standard provides a report : 
+RS_AUCV_RUNNER which can be executed from abap editor (Transaction-- SE38) and 
+the below details and email id can be provided to get the mail of the unit test results.
+
+If you want the unit test should run periodically, simply create a variant for the below report and 
+schedule a background job in Transaction-- SM36 and choose period like daily/weekly…
+
+So in that periodic basis you will get the mails about the unit test results and can check in any the unit test fails.
+
+Run in SE38 RS_AUCV_RUNNER
+Provide the class name, provide other details such as the mail id of the recipient and execute.
