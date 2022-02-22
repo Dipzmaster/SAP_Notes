@@ -1,0 +1,9 @@
+##Simple Unit Test using local class
+
+If unit test is performed from abap editor, then navigate along the menu path to do the UNIT Test.
+==>Program ==>Execute ==> Unit Tests
+
+The system wide setup in Transaction-SAUNIT_CLIENT_SETUP, for short duration the execution time is 60 seconds.
+
+For Global class unit test follow
+==>Class ==>Run ==>Unit Tests
