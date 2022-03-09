@@ -1,0 +1,54 @@
+##OOPS Concept
+
+#Class- 
+A Class is a template of objects which can handle more than one characteristics. 
+It has attributes and methods.
+
+#Objects- 
+Object is an real time entity in the world. 
+It is the instances on classes and hold some data.
+
+#Association-   
+Relating two classes or relation between two classes is called as Association.
+
+#Aggregation- 
+One class using the instances on other class is know as Aggregation.
+
+#Composition- 
+when one class data is related or will affect  other class data is known as composition. 
+Eg: when one class data is deleted the data pertaining to that in another class will be deleted.
+
+#Abstraction- 
+Extracting the essential details or data while ignoring the unwanted data.
+
+#Encapsulation( known as information hiding)-
+Restricts the visibility of attributes and methods t.
+Every object has an interface which shows how the objects interact with each other.
+Implementation part is hidden so that the process of interaction between the objects is made invisible to others.
+
+#Polymorphism-
+Identical methods behave differently in different classes.
+With the help of an interface it enables to address methods with same name to different objects.
+The signature or the definition of the method is always the same but the implementation is different for different classes.
+
+#Inheritance-
+Deriving a new class from the existing class
+Can inherit the data and methods of the super class
+Can overwrite the existing methods and can also add new ones.
+
+#Overriding- 
+Overriding allows to change the functionality of the inherited methods. This is also known as the redefinition. Overriding is not possible for STATIC methods
+
+#Overloading-
+Overloading allows to change the signature of the inherited methods in the subclasses. ABAP doesn’t support Overloading.
+Only exception is the CONSTRUCTOR method. Since we can create CONSTRUCTOR method in each subclass, we can change the signature of this method.
+
+#Friends-
+In any Object Oriented programming language, the access to private or protected components – both methods and attributes – would be prohibited. If someone try to access them, compiler would generate syntax error.
+Sometimes, it would be advantageous to give the access to these protected and private attributes to other classes. This can be achieved using the FRIENDS addition.
+
+#Narrowing Cast (Up Casting)- 
+When we assign the instance of the Subclass back to the instance of the Superclass, than it is called the “Narrow Casting”, because we are switching from a “More Specific view of an object” to “less specific view”.
+
+#Widening Cast (Down Casting)-
+When we assign the instance of the Superclass to the Subclass, than it is called the Widening Cast, because we are moving to the “More Specific View” from the “Less specific view”. Due to this reason it is also called the “Down Casting”.
