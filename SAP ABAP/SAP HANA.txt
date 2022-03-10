@@ -1,0 +1,5 @@
+##What is SAP HANA?
+SAP HANA an in-memory platform that runs analytic applications smarter, business processes faster, and data infrastructures simpler. It is more that just a database which  provides a unique combination of hardware and software innovations which have huge potential to optimize business applications.
+ 
+Hardware: Memory is not a bit and limited resources now. Modern Server can now have up to 2 TB of main memory which can even hold complete database on RAM, which shifts the bottleneck from I/O to CPU Cache and main memory.
+Row and Column Search: As we knew old database have row based search only. HANA can store the table and data in Column based store. Previously column search was used data warehousing type of work where combined functions play huge role.
